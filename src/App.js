@@ -1,12 +1,25 @@
 /* eslint-disable react/button-has-type */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useRef } from 'react';
 
 export default function App() {
   const [counter, setCounter] = useState(0);
   const [title, setTitle] = useState('');
+  const amountRef = useRef();
+  const reactMaxRef = useRef(false);
 
+  const handleCounter = () => {
+    if(!reactMaxRef.current) {
+      if(counter >= 10){
+        reactMaxRef.current = true;
+      }else{
+        setCounter(c => c + (+amountRef.current.value || 1))
+      }
 
-  const handleCounter = () => setCounter(c => c + 1);
+    }else {
+      console.log("You reached max clicks")
+    }
+
+  }
   const handleTitle = () => setTitle('Sting academy');
 
   useEffect(()=> {
@@ -27,15 +40,22 @@ export default function App() {
 
   },[counter]);
 
+  useEffect(()=>{
+    amountRef.current.focus();
+  })
+
   
 
   return (
     // eslint-disable-next-line react/jsx-filename-extension
     <div className="container text-center pt-5">
-      <button className="btn btn-primary" onClick={handleCounter}>Click me</button>
-      <button className="btn btn-primary" onClick={handleTitle}>Click me</button>
+      <input ref={amountRef} />
+      <br/>
+      <button className="btn btn-primary mt-3" onClick={handleCounter}>Click me</button>
+      <br/>
+      <button className="btn btn-primary mt-3" onClick={handleTitle}>Click me</button>
 
-      <div className="mt-3">{counter}</div>
+      <h1 className="mt-3">{counter}</h1>
     </div>
   );
 }
